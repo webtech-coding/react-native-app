@@ -1,45 +1,69 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Tabs } from "expo-router";
+import { StyleSheet } from 'react-native';
+import TabIcon from '../components/tabIcons';
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+const TabLayout =()=>{
+    const {Screen} = Tabs
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-    </Tabs>
-  );
+    return(
+        <Tabs screenOptions={{headerShown:false, tabBarActiveTintColor:'#0076bf', tabBarStyle:Style.tabBackground}}>
+            <Screen 
+                name="index"
+                options={{
+                    title:'Home',
+                    tabBarBadge:3,
+                    tabBarShowLabel:false,
+                    tabBarItemStyle:Style.tabBarMenu,
+                    tabBarIcon:({focused, color, size})=><TabIcon focused={focused} icon="home"/>,
+                   
+                }}
+            />
+            <Screen 
+                name='saved' 
+                options={{
+                    tabBarShowLabel:false,                    
+                    tabBarIcon:({focused, color, size})=><TabIcon focused={focused} icon="save"/>,
+                }}
+            />
+            <Screen
+                name='search' 
+                options={{
+                    tabBarShowLabel:false,
+                    tabBarIcon:({focused, color, size})=><TabIcon focused={focused} icon="search"/>,
+                }}
+            />
+            <Screen 
+                name='profile' 
+                options={{
+                    tabBarShowLabel:false,
+                    tabBarIcon:({focused, color, size})=><TabIcon focused={focused} icon="user"/>,
+                }}
+            />
+        </Tabs>
+    )
 }
+
+const Style = StyleSheet.create({
+    tabBackground:{
+        backgroundColor:'#10002b',
+        display:'flex',
+        flexDirection:'row-reverse',
+        height:40,        
+        borderRadius:50,
+        color:"#ffffff",
+        position:'absolute',
+        bottom:30,
+        width:'90%',
+        marginLeft:'5%',
+        margin:'auto'
+       
+    },
+    tabBarMenu:{
+        display:'flex',
+        borderRadius:50,
+        color:'#ffffff',
+       
+    },
+})
+
+export default TabLayout;
