@@ -1,11 +1,10 @@
 import Icon from '@expo/vector-icons/Feather';
 import { FC, ReactElement } from "react";
 import { StyleSheet, View } from 'react-native';
-const img =require( './../../assets/images/icon.png');
 
 type TabIconPropTypes = {
     focused:boolean,
-    icon:'home'|'search'|'save' | 'user',    
+    icon:'home'|'search'|'save' | 'user',
 }
 
 const TabIcon:FC<TabIconPropTypes> =({focused, icon}):ReactElement=>{

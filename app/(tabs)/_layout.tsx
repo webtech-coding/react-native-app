@@ -14,7 +14,7 @@ const TabLayout =()=>{
                     tabBarBadge:3,
                     tabBarShowLabel:false,
                     tabBarItemStyle:Style.tabBarMenu,
-                    tabBarIcon:({focused, color, size})=><TabIcon focused={focused} icon="home"/>,
+                    tabBarIcon:({focused})=><TabIcon focused={focused} icon="home"/>,
                    
                 }}
             />
@@ -22,21 +22,21 @@ const TabLayout =()=>{
                 name='saved' 
                 options={{
                     tabBarShowLabel:false,                    
-                    tabBarIcon:({focused, color, size})=><TabIcon focused={focused} icon="save"/>,
+                    tabBarIcon:({focused})=><TabIcon focused={focused} icon="save"/>,
                 }}
             />
             <Screen
                 name='search' 
                 options={{
                     tabBarShowLabel:false,
-                    tabBarIcon:({focused, color, size})=><TabIcon focused={focused} icon="search"/>,
+                    tabBarIcon:({focused})=><TabIcon focused={focused} icon="search"/>,
                 }}
             />
             <Screen 
                 name='profile' 
                 options={{
                     tabBarShowLabel:false,
-                    tabBarIcon:({focused, color, size})=><TabIcon focused={focused} icon="user"/>,
+                    tabBarIcon:({focused})=><TabIcon focused={focused} icon="user"/>,
                 }}
             />
         </Tabs>
@@ -55,8 +55,8 @@ const Style = StyleSheet.create({
         bottom:30,
         width:'90%',
         marginLeft:'5%',
-        margin:'auto'
-       
+        margin:'auto',
+       borderColor:'#10002b'
     },
     tabBarMenu:{
         display:'flex',
