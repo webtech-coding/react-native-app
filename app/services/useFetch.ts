@@ -6,8 +6,7 @@ const useFetch = <T>(fetchFunction:()=>Promise<T>, autoFetch=true)=>{
     const [error, setError] = useState<Error | null>(null)
 
     useEffect(()=>{
-        console.log('what is happeining', autoFetch)
-
+      
         if(autoFetch){      
             console.log('what is happeining')      
             fetchData()
@@ -19,9 +18,7 @@ const useFetch = <T>(fetchFunction:()=>Promise<T>, autoFetch=true)=>{
         try {
             resetState();
             setLoading(true);
-            console.log("The data comes from here")
             const data = await fetchFunction();
-            console.log(data)
             setData(data);
 
         } catch (error) {
@@ -36,7 +33,7 @@ const useFetch = <T>(fetchFunction:()=>Promise<T>, autoFetch=true)=>{
         setError(null)
     }
 
-    return { data, loading, error, refecth: fetchData }
+    return { data, loading, error, refetch: fetchData }
 
 }
 

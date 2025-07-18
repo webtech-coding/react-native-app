@@ -5,6 +5,7 @@ const headers = {
 }
 
 export const fetchMovieData = async <T>(query?:string):Promise<T>=>{
+
     try{
         const endPoint = query ? query : '/discover/movie?sort_by=popularity.dec' 
         const url: URL = new URL(`${process.env.EXPO_PUBLIC_BASE_URL }${endPoint}`);
@@ -13,11 +14,14 @@ export const fetchMovieData = async <T>(query?:string):Promise<T>=>{
             
             throw new Error('Unable to fetch movies')
         }
+        console.log(response)
 
-        const data = await response.json();        
-        return data.results || [];
+        const data = await response.json();  
+    
+        return data.results || data;
 
     }catch(e){
+        console.log(e)
         throw new Error('error')
     }
     
