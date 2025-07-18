@@ -1,12 +1,19 @@
 import Icon from '@expo/vector-icons/Feather';
+import { FC } from 'react';
 import { Image, StyleSheet, TextInput, View } from "react-native";
 
-const Header =()=>{
+type HeaderProps ={
+    onSearchTextChange:(text:string)=>void
+}
+
+const Header:FC<HeaderProps> =({onSearchTextChange})=>{
+
+
     return(
         <View style={Style.header}>
             <Image source={require('./../../assets/images/logo.jpg')} style={Style.headerImage}/>
             <View style={Style.headerSearch}>
-                <TextInput placeholder='Search movies ...' style={Style.headerInput}/>
+                <TextInput placeholder='Search movies ...' style={Style.headerInput} onChangeText={onSearchTextChange}/>
                 <Icon name="search" size={24} color="#e0aaff" style={Style.searchIcon}/>
             </View>
         </View>

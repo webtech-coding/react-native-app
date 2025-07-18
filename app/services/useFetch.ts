@@ -1,24 +1,30 @@
 import { useEffect, useState } from "react"
+import { fetchMovieData } from "./api"
 
-const useFetch = <T>(fetchFunction:()=>Promise<T>, autoFetch=true)=>{
+type UseFetchResult<T> ={
+    data: T |  null,
+    loading: boolean,
+    error:Error | null,
+    fetchData:(url:string)=> Promise<void>
+}
+
+const useFetch =<T>(queryString:string, autoFetch=true):UseFetchResult<T>=>{
     const [data, setData] = useState<T | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<Error | null>(null)
 
-    useEffect(()=>{
-      
-        if(autoFetch){      
-            console.log('what is happeining')      
-            fetchData()
+    useEffect(()=>{      
+        if(autoFetch){    
+            fetchData(queryString)
         }
     },[])
 
-    const fetchData = async ()=>{
-    
+    const fetchData = async (fetchQuery:string = queryString)=>{
+      
         try {
             resetState();
             setLoading(true);
-            const data = await fetchFunction();
+            const data:T = await fetchMovieData<T>(fetchQuery);
             setData(data);
 
         } catch (error) {
@@ -33,7 +39,7 @@ const useFetch = <T>(fetchFunction:()=>Promise<T>, autoFetch=true)=>{
         setError(null)
     }
 
-    return { data, loading, error, refetch: fetchData }
+    return { data, loading, error, fetchData }
 
 }
 

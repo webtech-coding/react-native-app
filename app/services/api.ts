@@ -4,7 +4,7 @@ const headers = {
     Authorization:`Bearer ${process.env.EXPO_PUBLIC_MOVIE_TOKEN }`
 }
 
-export const fetchMovieData = async <T>(query?:string):Promise<T>=>{
+export const fetchMovieData = async <T>(query:string):Promise<T>=>{
 
     try{
         const endPoint = query ? query : '/discover/movie?sort_by=popularity.dec' 
@@ -14,14 +14,12 @@ export const fetchMovieData = async <T>(query?:string):Promise<T>=>{
             
             throw new Error('Unable to fetch movies')
         }
-        console.log(response)
-
         const data = await response.json();  
+        console.log(data)
     
         return data.results || data;
 
     }catch(e){
-        console.log(e)
         throw new Error('error')
     }
     

@@ -6,19 +6,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ErrorView from "../components/errorView";
 import Loader from "../components/loader";
 import { MovieDetailSchema } from "../interfaces/interface";
-import { fetchMovieData } from "../services/api";
 import useFetch from "../services/useFetch";
 
 const MovieDetail=()=>{
     const {id} = useLocalSearchParams();
     const router = useRouter();
-    const url = `/movie/${id}`;
+    const url = `/movie/${id}&include_video=true`;
 
-    const {data, loading, error, refetch:fetchMovieWithId } = useFetch(()=>fetchMovieData<MovieDetailSchema>(url), false)
+    const {data, loading, error, fetchData:fetchMovieWithId } = useFetch<MovieDetailSchema>(url)
 
     useEffect(()=>{
         if(!id)return
-        fetchMovieWithId()
+        fetchMovieWithId(url)
     },[id])
 
     useEffect(()=>{
@@ -80,7 +79,7 @@ const Style = StyleSheet.create({
     },
     movieTitleContainer:{
         position:'absolute',
-        top:160,
+        top:170,
         padding:10,
         backgroundColor:'#e0aaff',
         opacity:.9
