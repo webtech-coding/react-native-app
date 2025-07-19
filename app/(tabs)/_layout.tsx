@@ -22,7 +22,7 @@ const TabLayout =()=>{
                 name='saved' 
                 options={{
                     tabBarShowLabel:false,                    
-                    tabBarIcon:({focused})=><TabIcon focused={focused} icon="save"/>,
+                    tabBarIcon:({focused})=><TabIcon focused={focused} icon="bookmark"/>,
                 }}
             />
             <Screen

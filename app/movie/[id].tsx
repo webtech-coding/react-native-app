@@ -1,12 +1,15 @@
 import AntDesign from '@expo/vector-icons/AntDesign';
+import Icon from '@expo/vector-icons/Feather';
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import ErrorView from "../components/errorView";
 import Loader from "../components/loader";
 import { MovieDetailSchema } from "../interfaces/interface";
 import useFetch from "../services/useFetch";
+import { getFavMovies, storeFavMovie } from '../utils/localStorage';
 
 const MovieDetail=()=>{
     const {id} = useLocalSearchParams();
@@ -14,6 +17,7 @@ const MovieDetail=()=>{
     const url = `/movie/${id}&include_video=true`;
 
     const {data, loading, error, fetchData:fetchMovieWithId } = useFetch<MovieDetailSchema>(url)
+    const [movieIsFav, setIsMovieIsFav] = useState<boolean>(false);
 
     useEffect(()=>{
         if(!id)return
@@ -21,8 +25,18 @@ const MovieDetail=()=>{
     },[id])
 
     useEffect(()=>{
-        console.log(data)
+        const movieIsFaved = async ()=>{
+            if(!id)return false
+            const allFavMovies:string[] = await getFavMovies();
+            
+            setIsMovieIsFav(allFavMovies && allFavMovies.includes(id.toString()));  
+        }
+        movieIsFaved() 
     },[data])
+
+    const addFavMovie =()=>{
+        storeFavMovie(id.toString());
+    }
 
     return(
         <SafeAreaView>
@@ -59,6 +73,10 @@ const MovieDetail=()=>{
                         <View style={Style.movieOverview}>
                             <Text style={Style.movieOverviewText}>{data.overview}</Text>
                         </View>
+                        <TouchableOpacity style={[Style.bookmark]} onPress={addFavMovie}>
+                            <Icon name='bookmark' size={18} color="#ffffff" style={{marginRight:10}}/>
+                            <Text style={[Style.text, {color:'#ffffff'}]}> { movieIsFav ? 'Remove favourite':'Add to favourite' }</Text>
+                        </TouchableOpacity>
                     </View>
                 )}
             </View>
@@ -123,7 +141,7 @@ const Style = StyleSheet.create({
         height:35,
         width:35,
         borderColor:"#ffffff",
-       backgroundColor:"#e0aaff",
+        backgroundColor:"#e0aaff",
         borderRadius:50,
         borderWidth:1,
         opacity:.8,
@@ -132,6 +150,15 @@ const Style = StyleSheet.create({
         position:'absolute',
         left:5,
         top:5
+    },
+    bookmark:{
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor:'#e0aaff',
+        padding:10,
+        margin:10,
+        borderRadius:5
     }
  
 })

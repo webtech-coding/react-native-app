@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 type TabIconPropTypes = {
     focused:boolean,
-    icon:'home'|'search'|'save' | 'user',
+    icon:'home'|'search'|'bookmark' | 'user',
 }
 
 const TabIcon:FC<TabIconPropTypes> =({focused, icon}):ReactElement=>{
