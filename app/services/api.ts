@@ -14,8 +14,7 @@ export const fetchMovieData = async <T>(query:string):Promise<T>=>{
             
             throw new Error('Unable to fetch movies')
         }
-        const data = await response.json();  
-        console.log(data)
+        const data = await response.json(); 
     
         return data.results || data;
 

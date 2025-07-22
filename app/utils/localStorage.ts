@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const FAV_MOVIE_KEY = "favMovie"
 
 export const storeFavMovie=async (value:string)=>{
-    console.log("THE VALUE", value)
     try {
         let storedMovies:string[]= []
         storedMovies = await getFavMovies();
@@ -18,13 +17,10 @@ export const storeFavMovie=async (value:string)=>{
         }else{
             storedMovies = [value]
         }
-        console.log(storedMovies)        
-        
         await AsyncStorage.setItem(FAV_MOVIE_KEY, JSON.stringify(storedMovies));
 
     }catch(error) {
         console.log(error)
-        console.log('unable to bookmark');
     }
 }
 
@@ -39,5 +35,21 @@ export const getFavMovies = async ():Promise<string[]>=>{
     } catch (error) {
         console.log('unable to get the bookmark')
         return []
+    }
+}
+
+export const removeFavMovie = async(value:string)=>{
+    try {
+        let favMovies: string[] = [];
+        const storedMovies = await AsyncStorage.getItem(FAV_MOVIE_KEY);
+        if(storedMovies && Array.isArray(storedMovies)){
+            if(storedMovies.includes(value)){
+                favMovies = storedMovies.filter(movie =>movie !==value);
+                await AsyncStorage.setItem(FAV_MOVIE_KEY, JSON.stringify(favMovies));
+            }
+        }
+       
+    } catch (error) {
+        console.log('Unable to remove from fav movie')
     }
 }

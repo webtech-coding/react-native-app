@@ -9,7 +9,7 @@ import ErrorView from "../components/errorView";
 import Loader from "../components/loader";
 import { MovieDetailSchema } from "../interfaces/interface";
 import useFetch from "../services/useFetch";
-import { getFavMovies, storeFavMovie } from '../utils/localStorage';
+import { getFavMovies, removeFavMovie, storeFavMovie } from '../utils/localStorage';
 
 const MovieDetail=()=>{
     const {id} = useLocalSearchParams();
@@ -34,8 +34,14 @@ const MovieDetail=()=>{
         movieIsFaved() 
     },[data])
 
-    const addFavMovie =()=>{
-        storeFavMovie(id.toString());
+    const toggleFavMovie =()=>{
+        if(movieIsFav){
+            removeFavMovie(id.toString());
+            setIsMovieIsFav(false)
+        }else{
+            storeFavMovie(id.toString());
+            setIsMovieIsFav(true);
+        }
     }
 
     return(
@@ -45,7 +51,11 @@ const MovieDetail=()=>{
                 {!data && loading && <Loader />}
                 {data && !error && (
                     <View style={{height:'100%', justifyContent:'flex-start'}}>
-                        <Image source={{ uri:data.backdrop_path ? `https://image.tmdb.org/t/p/w500${data.backdrop_path}` : 'https://placehold.co/200x200/0076bf/FFFFFF/png'}} resizeMode="cover" style={Style.backdropeImage}/>
+                        <Image 
+                            source={{ uri:data.backdrop_path ? `https://image.tmdb.org/t/p/w500${data.backdrop_path}` : 'https://placehold.co/200x200/0076bf/FFFFFF/png'}} 
+                            resizeMode="cover" 
+                            style={Style.backdropeImage}
+                        />
                         
                         <TouchableOpacity style={Style.backArrow} onPress={()=>router.back()}>
                             <AntDesign name='arrowleft'  color={"#ffffff"}/>
@@ -73,7 +83,7 @@ const MovieDetail=()=>{
                         <View style={Style.movieOverview}>
                             <Text style={Style.movieOverviewText}>{data.overview}</Text>
                         </View>
-                        <TouchableOpacity style={[Style.bookmark]} onPress={addFavMovie}>
+                        <TouchableOpacity style={[Style.bookmark]} onPress={toggleFavMovie}>
                             <Icon name='bookmark' size={18} color="#ffffff" style={{marginRight:10}}/>
                             <Text style={[Style.text, {color:'#ffffff'}]}> { movieIsFav ? 'Remove favourite':'Add to favourite' }</Text>
                         </TouchableOpacity>

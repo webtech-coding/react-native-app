@@ -11,7 +11,6 @@ const TabLayout =()=>{
                 name="index"
                 options={{
                     title:'Home',
-                    tabBarBadge:3,
                     tabBarShowLabel:false,
                     tabBarItemStyle:Style.tabBarMenu,
                     tabBarIcon:({focused})=><TabIcon focused={focused} icon="home"/>,
@@ -23,6 +22,7 @@ const TabLayout =()=>{
                 options={{
                     tabBarShowLabel:false,                    
                     tabBarIcon:({focused})=><TabIcon focused={focused} icon="bookmark"/>,
+                    tabBarBadge:3
                 }}
             />
             <Screen
