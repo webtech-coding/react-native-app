@@ -41,14 +41,14 @@ export const getFavMovies = async ():Promise<string[]>=>{
 export const removeFavMovie = async(value:string)=>{
     try {
         let favMovies: string[] = [];
-        const storedMovies = await AsyncStorage.getItem(FAV_MOVIE_KEY);
+        let storedMovies = await AsyncStorage.getItem(FAV_MOVIE_KEY);
+        storedMovies = storedMovies ? JSON.parse(storedMovies) : []
         if(storedMovies && Array.isArray(storedMovies)){
             if(storedMovies.includes(value)){
                 favMovies = storedMovies.filter(movie =>movie !==value);
                 await AsyncStorage.setItem(FAV_MOVIE_KEY, JSON.stringify(favMovies));
             }
         }
-       
     } catch (error) {
         console.log('Unable to remove from fav movie')
     }

@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import MovieCard from "../components/movieCard";
 import { movieSchema } from "../interfaces/interface";
 import { fetchMovieData } from "../services/api";
-import { getFavMovies } from "../utils/localStorage";
+import { getFavMovies } from "./../utils/localStorage";
 
 const Saved =()=>{
 
@@ -38,11 +38,11 @@ const Saved =()=>{
                             <Text>No movie added to the favourite list</Text>
                         )
                     }
-                    <ScrollView>
+                    <ScrollView showsVerticalScrollIndicator={false}>
                         {
-                                allFavMovies.map((movie, index)=>{
+                            allFavMovies.map((movie, index)=>{
                                 return <MovieCard movie={movie} key={movie.id} index={index}/>
-                                })
+                            })
                         }
                         
                     </ScrollView>

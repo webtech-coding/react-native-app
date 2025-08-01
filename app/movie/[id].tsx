@@ -3,6 +3,9 @@ import Icon from '@expo/vector-icons/Feather';
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import NotificationModal from '../components/notificationModal';
+
+
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import ErrorView from "../components/errorView";
@@ -17,7 +20,8 @@ const MovieDetail=()=>{
     const url = `/movie/${id}&include_video=true`;
 
     const {data, loading, error, fetchData:fetchMovieWithId } = useFetch<MovieDetailSchema>(url)
-    const [movieIsFav, setIsMovieIsFav] = useState<boolean>(false);
+    const [movieIsFav, setIMovieIsFav] = useState<boolean>(false);
+    const [notificationModalOpen, setNotificationModalOpen] = useState<boolean>(false);
 
     useEffect(()=>{
         if(!id)return
@@ -29,26 +33,37 @@ const MovieDetail=()=>{
             if(!id)return false
             const allFavMovies:string[] = await getFavMovies();
             
-            setIsMovieIsFav(allFavMovies && allFavMovies.includes(id.toString()));  
+            setIMovieIsFav(allFavMovies && allFavMovies.includes(id.toString()));  
         }
         movieIsFaved() 
-    },[data])
+    },[data]) 
 
     const toggleFavMovie =()=>{
+        setNotificationModalOpen(true);
         if(movieIsFav){
             removeFavMovie(id.toString());
-            setIsMovieIsFav(false)
+            setIMovieIsFav(false)
+            
         }else{
             storeFavMovie(id.toString());
-            setIsMovieIsFav(true);
+            setIMovieIsFav(true);
         }
     }
+
+
 
     return(
         <SafeAreaView>
             <View style={Style.container}>
                 {error && <ErrorView /> }                
                 {!data && loading && <Loader />}
+                {notificationModalOpen && (
+                    <NotificationModal 
+                        visible={true}
+                        messageType={movieIsFav ? 'added':'removed'}
+                        closeModal={()=>setNotificationModalOpen(false)}
+                    />
+                )}
                 {data && !error && (
                     <View style={{height:'100%', justifyContent:'flex-start'}}>
                         <Image 
